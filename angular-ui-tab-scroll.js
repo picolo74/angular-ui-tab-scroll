@@ -255,11 +255,9 @@ angular.module('ui.tab.scroll', [])
                     var tabsetScope = $tabsetElem.isolateScope() || $tabsetElem.scope(); // get the tabset's scope to access to tabs collection
 
                     $scope.$watch('watchTabs', function(newValues, oldValues) {
-                        if (newValues && oldValues && newValues.length > oldValues.length) {
+                        if (newValues && oldValues && newValues.length !== oldValues.length) {
                             $timeout(initAndApply, 0);
                         }
-
-
                     });
 
                     $scope.$watchCollection(function() {

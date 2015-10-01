@@ -1,7 +1,7 @@
 {
   "name": "angular-ui-tab-scroll",
   "main": ["angular-ui-tab-scroll.js","angular-ui-tab-scroll.css"],
-  "version": "0.1.6",
+  "version": "0.1.6.1",
   "homepage": "https://github.com/picolo74/angular-ui-tab-scroll",
   "authors": [
     "Baccarelli Aurélien <picolo74@gmail.com>"
