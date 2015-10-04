@@ -212,7 +212,12 @@ angular.module('ui.tab.scroll', [])
 
                     var generateScrollFunction = function(el, offset) {
                         return function() {
-                            el.scrollLeft += offset;
+                            //el.scrollLeft += offset;
+                            // JQuery animation
+                            $scope.tabContainer.animate({
+                                scrollLeft: el.scrollLeft + offset
+                            }, 800);
+
                             $scope.recalcSides();
                         };
                     };
