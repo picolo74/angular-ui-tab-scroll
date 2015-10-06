@@ -197,12 +197,16 @@ angular.module('ui.tab.scroll', [])
                             var html = nodeObj.html().trim();
                             if (html) {
                                 nodes.push(html);
+
                             }
 
                         });
 
                         toTheRightHTML = nodes.join('<br>');
                         $scope.tooltipRightHtml = showTooltips ? $sce.trustAsHtml(toTheRightHTML) : '';
+                        if (checkVisibility) {
+                            checkVisibility();
+                        }
                     };
 
                     $scope.recalcSides = function() {
@@ -216,11 +220,59 @@ angular.module('ui.tab.scroll', [])
                             // JQuery animation
                             $scope.tabContainer.animate({
                                 scrollLeft: el.scrollLeft + offset
-                            }, 800);
+                            }, 100);
 
                             $scope.recalcSides();
                         };
                     };
+
+                    var checkVisibility;
+                    var visibilityId;
+                    var simulateClickRight;
+
+                    $scope.$on('showSelected',function(event,selected){
+                        visibilityId = selected;
+                        // si non visible, ne peut que se trouver à droite pour l'instant
+                        checkVisibility = function() {
+                            
+                            if (!$scope.tabContainer) return;
+
+                            var nodes = [];
+                            $scope.tabContainer.find($scope.getSelector()).each(function(index, node) {
+
+                                var nodeObj = $(node);
+                                if (nodeObj[0].id !== visibilityId) {
+                                    return;
+                                }
+
+                                var nodeContainer = nodeObj.parentsUntil('ul');
+                                var nodeWidth = nodeContainer.offset().left;
+
+                                if (nodeWidth < $scope.tabWidth + $scope.baseLeft) {
+                                    checkVisibility = null;
+                                    return;
+                                }
+                                
+                                checkVisibility = null;
+                                // is not visible
+                                var $tabs = $scope.tabContainer = $el.find('.spacer').find('ul.nav.nav-tabs');
+                                $scope.tabContainer.animate({
+                                scrollLeft: $tabs[0].scrollLeft + nodeWidth
+                            }, 100);
+
+                                
+                            });
+
+                            
+                            
+                        }
+
+
+
+
+
+
+                    });
 
                     var init = function() {
                         var $leftNav = $el.find('.left-nav-button');
@@ -238,7 +290,7 @@ angular.module('ui.tab.scroll', [])
 
                         bindHoldFunctionTo($leftNav, generateScrollFunction(realTabs, -tabScrollWidth));
                         bindHoldFunctionTo($rightNav, generateScrollFunction(realTabs, tabScrollWidth));
-
+                        
                         $scope.recalcSides();
                     };
 
