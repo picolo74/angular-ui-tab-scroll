@@ -11,7 +11,8 @@ angular.module('ui.tab.scroll', [])
             //select the innermost child that isn't a span
             //this way we cover getting <tab-heading> and <tab heading=''>
             //but leave other markup out of it, unless it's a span (commonly an icon)
-            tooltipTextSelector: '*:not(:has("*:not(span)"))',
+            // '*:not(:has("*:not(span)"))'
+            tooltipTextSelector: 'tab-heading' ,
 
             scrollLeftIcon: 'glyphicon glyphicon-chevron-left',
             scrollRightIcon: 'glyphicon glyphicon-chevron-right'
@@ -313,6 +314,7 @@ angular.module('ui.tab.scroll', [])
 
                     $scope.$watch('watchTabs', function(newValues, oldValues) {
                         if (newValues && oldValues && newValues.length !== oldValues.length) {
+                            console.log('init N apply');
                             $timeout(initAndApply, 0);
                         }
                     });
